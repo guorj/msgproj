@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    name: db
+    url: jdbc:mysql://localhost:3306/vstu
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    # connection-test-query: SELECT 1
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+  mvc:
+    view:
+      prefix: classpath:/templates/
+      suffix: .html
