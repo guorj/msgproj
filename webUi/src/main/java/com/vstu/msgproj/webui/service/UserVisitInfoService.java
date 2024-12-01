@@ -1,11 +1,13 @@
 package com.vstu.msgproj.webui.service;
 
+import com.vstu.msgproj.webui.model.Result;
 import com.vstu.msgproj.webui.model.UserVisitInfo;
 import com.vstu.msgproj.webui.repository.UserVisitInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserVisitInfoService {
@@ -17,27 +19,32 @@ public class UserVisitInfoService {
         return repository.findAll();
     }
 
-    public List<UserVisitInfo> getGroupByAge() {
-        return repository.findAllUser();
+    public Result getGroupByAge() {
+        List<Map<String,String>> list = repository.groupByAge();
+        return new Result("age",list);
     }
 
-    public List<UserVisitInfo> getGroupByGender() {
-        return repository.findAllUser();
+    public Result getGroupByGender() {
+        return new Result("gender",repository.groupByGender());
     }
 
-    public List<UserVisitInfo> getGroupByCityLevel() {
-        return repository.findAllUser();
+    public Result getGroupByCityLevel() {
+        return new Result("city_level",repository.groupByCityLevel());
     }
 
-    public List<UserVisitInfo> getGroupBySeries() {
-        return repository.findAllUser();
+    public Result getGroupByProvince() {
+        return new Result("province",repository.groupByProvince());
     }
 
-    public List<UserVisitInfo> getGroupbyBrand() {
-        return repository.findAllUser();
+    public Result getGroupBySeries() {
+        return new Result("car_series",repository.groupBySeries());
     }
 
-    public List<UserVisitInfo> getGroupByEnergy() {
-        return repository.findAllUser();
+    public Result getGroupbyBrand() {
+        return new Result("car_brand",repository.groupByBrand());
+    }
+
+    public Result getGroupByEnergy() {
+        return new Result("new_energy",repository.groupByNewEnergy());
     }
 }

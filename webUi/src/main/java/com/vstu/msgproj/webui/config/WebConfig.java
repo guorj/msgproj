@@ -24,7 +24,6 @@ public class WebConfig implements WebMvcConfigurer {
         return resolver;
     }
 
-
     @Bean
     public SpringTemplateEngine templateEngine(SpringResourceTemplateResolver templateResolver) {
         SpringTemplateEngine engine = new SpringTemplateEngine();
@@ -40,13 +39,9 @@ public class WebConfig implements WebMvcConfigurer {
         return resolver;
     }
 
+    //默认访问index.html
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("login");
-
-//        registry.addViewController("/").setViewName("index");
-
-//        registry.addViewController("/login").setViewName("login"); // 添加默认的视图映射
-//        registry.addViewController("/success").setViewName("success");
+        registry.addViewController("/").setViewName("index");
     }
 }

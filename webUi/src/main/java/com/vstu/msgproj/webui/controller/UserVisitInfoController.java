@@ -1,5 +1,6 @@
 package com.vstu.msgproj.webui.controller;
 
+import com.vstu.msgproj.webui.model.Result;
 import com.vstu.msgproj.webui.model.UserVisitInfo;
 import com.vstu.msgproj.webui.service.UserVisitInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,34 +15,43 @@ import java.util.List;
 public class UserVisitInfoController {
     @Autowired
     private UserVisitInfoService service;
-
     @GetMapping("/visits")
     public List<UserVisitInfo> getVisits() {
-        return service.getAllVisits();
+        List<UserVisitInfo> list= service.getAllVisits();
+        return list;
     }
 
-    @GetMapping("/age")
-    public List<UserVisitInfo> getGroupByAge() {
-        return service.getGroupByAge();
-    }
+//    @GetMapping("/age")
+//    public Result getGroupByAge() {
+//        return service.getGroupByAge();
+//    }
 
     @GetMapping("/age")
-    public List<UserVisitInfo> getGroupByCityLevel() {
+    public Result getGroupByAge() {
         return service.getGroupByAge();
     }
-
-    @GetMapping("/age")
-    public List<UserVisitInfo> getGroupBySeries() {
-        return service.getGroupByAge();
+    @GetMapping("/cityLevel")
+    public Result getGroupByCityLevel() {
+        return service.getGroupByCityLevel();
     }
 
-    @GetMapping("/age")
-    public List<UserVisitInfo> getGroupByBrand() {
-        return service.getGroupByAge();
+    @GetMapping("/province")
+    public Result getGroupByProvince() {
+        return service.getGroupByProvince();
     }
 
-    @GetMapping("/age")
-    public List<UserVisitInfo> getGroupByEnergy() {
-        return service.getGroupByAge();
+    @GetMapping("/series")
+    public Result getGroupBySeries() {
+        return service.getGroupBySeries();
+    }
+
+    @GetMapping("/brand")
+    public Result getGroupByBrand() {
+        return service.getGroupbyBrand();
+    }
+
+    @GetMapping("/newEnergy")
+    public Result getGroupByEnergy() {
+        return service.getGroupByEnergy();
     }
 }
