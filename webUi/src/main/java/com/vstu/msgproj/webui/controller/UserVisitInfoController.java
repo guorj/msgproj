@@ -21,10 +21,10 @@ public class UserVisitInfoController {
         return list;
     }
 
-//    @GetMapping("/age")
-//    public Result getGroupByAge() {
-//        return service.getGroupByAge();
-//    }
+    @GetMapping("/gender")
+    public Result getGroupByGender() {
+        return service.getGroupByGender();
+    }
 
     @GetMapping("/age")
     public Result getGroupByAge() {
