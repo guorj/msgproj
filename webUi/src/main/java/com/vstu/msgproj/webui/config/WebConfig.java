@@ -49,6 +49,4 @@ public class WebConfig implements WebMvcConfigurer {
 //        registry.addViewController("/login").setViewName("login"); // 添加默认的视图映射
 //        registry.addViewController("/success").setViewName("success");
     }
-
-
 }
