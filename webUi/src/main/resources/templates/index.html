@@ -81,6 +81,9 @@
 <div id="map_all" style="width: 1500px;height:600px;" class="center"></div>
 <br>
 <hr>
+<div id="age_bar" style="width: 1500px;height:600px;" class="center"></div>
+<br>
+<hr>
 <div id="time_line" style="width: 1500px;height:600px;" class="center"></div>
 <br>
 <hr>
@@ -116,10 +119,10 @@
         {name: '北京', value: 100},
         {name: '上海', value: randomValue()}
     ]
-    var myMapChart = echarts.init(document.getElementById('map_all'));
     function randomValue() {
         return Math.round(Math.random()*1000);
     }
+    var myMapChart = echarts.init(document.getElementById('map_all'));
     myMapChart.setOption({
         title: {
             text: '看车用户地图'
@@ -184,42 +187,10 @@
         // 异步加载json格式数据
         $.getJSON('http://localhost:8080/uvi/province', function(data) {
 
-            // // 假设 data.valueMap 是一个 JSON 对象
-            // var valueMap = data.valueMap;
-            //
-            // // 将 JSON 对象转换为 Map
-            // var myMap = new Map(Object.entries(valueMap));
-            // // 打印 Map 数据
-            // myMap.forEach((value, key) => {
-            //     console.log(`城市: ${key}, 值: ${value}`);
-            // });
-            //
-            // data = [
-            //     {name: '北京', value: 100},
-            //     {name: '上海', value: randomValue()},
-            //     {name: '山东', value: 1000}
-            // ]
-            // console.log("                                          ========== ===============");
-            // if (data && Array.isArray(data)) {
-            //     data.forEach(item => {
-            //         console.log(`城市: ${item.name}, 值: ${item.value}`);
-            //     });
-            // } else {
-            //     console.error("data 不是一个有效的数组:", data);
-            // }
-
-            // 转换为数组格式
+            // json转换为数组格式
             const dataArray = Object.entries(data.valueMap).map(([name, value]) => {
                 return { name, value };
             });
-            // if (dataArray && Array.isArray(dataArray)) {
-            //     dataArray.forEach(item => {
-            //         console.log(`城市: ${item.name}, 值: ${item.value}`);
-            //     });
-            // } else {
-            //     console.error("data 不是一个有效的数组:", dataArray);
-            // }
-// 输出结果
             myMapChart.setOption({
                 series: [{
                     data: dataArray
