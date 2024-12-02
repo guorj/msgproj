@@ -61,9 +61,9 @@
         <tbody>
         <tr>
             <td id="datetime"></td>
-            <td id="currentConfirmedCount"></td>
-            <td id="confirmedCount"></td>
-            <td id="suspectedCount"></td>
+            <td id="TotalNum"></td>
+            <td id="male"></td>
+            <td id="female"></td>
         </tr>
         </tbody>
     </table>
@@ -94,9 +94,9 @@
             obj = JSON.parse(JSON.stringify(data.valueMap))
             // alert(JSON.stringify(obj))
             $("#datetime").html(new Date().toString())
-            $("#currentConfirmedCount").html(obj[22])
-            $("#confirmedCount").html(obj[23])
-            $("#suspectedCount").html(obj[24])
+            $("#TotalNum").html(obj['男']+obj['女'])
+            $("#male").html(obj['男'])
+            $("#female").html(obj['女'])
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.error("请求失败: " + textStatus, errorThrown);
             alert(3);
