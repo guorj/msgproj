@@ -48,19 +48,13 @@
                 时间
             </th>
             <th>
-                现存确诊
+                总人数
             </th>
             <th>
-                累计确诊
+                男性用户数
             </th>
             <th>
-                现存疑似
-            </th>
-            <th>
-                累计治愈
-            </th>
-            <th>
-                累计死亡
+                女性用户数
             </th>
         </tr>
         </thead>
@@ -70,8 +64,6 @@
             <td id="currentConfirmedCount"></td>
             <td id="confirmedCount"></td>
             <td id="suspectedCount"></td>
-            <td id="curedCount"></td>
-            <td id="deadCount"></td>
         </tr>
         </tbody>
     </table>
@@ -97,17 +89,14 @@
 
     /*--------------------全国统计数据-----------------------------*/
     $(document).ready(function() {
-        $.getJSON("http://localhost:8080/uvi/age", function (data) {
+        $.getJSON("http://localhost:8080/uvi/gender", function (data) {
             // alert(JSON.stringify(data.valueMap));
             obj = JSON.parse(JSON.stringify(data.valueMap))
             // alert(JSON.stringify(obj))
-            $("#datetime").html(obj[21])
+            $("#datetime").html(new Date().toString())
             $("#currentConfirmedCount").html(obj[22])
             $("#confirmedCount").html(obj[23])
             $("#suspectedCount").html(obj[24])
-            $("#suspectedCount").html(obj[25])
-            $("#curedCount").html(obj[26])
-            $("#deadCount").html(obj[27])
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.error("请求失败: " + textStatus, errorThrown);
             alert(3);
@@ -198,8 +187,59 @@
             });
         });
     }, 1000)
-
-
+    /*--------------------年龄分布-----------------------------*/
+    var ageBar = echarts.init(document.getElementById('age_bar'));
+    $.getJSON("http://localhost:8080/uvi/age", function (data) {
+        alert(JSON.stringify(data.valueMap));
+        obj = JSON.parse(JSON.stringify(data.valueMap))
+        // 定义区间
+        const ranges = {
+            '20-25': 0,
+            '25-30': 0,
+            '30-35': 0,
+            '35-40': 0,
+            '40-45': 0,
+            '45+': 0
+        };
+        // 分组累加
+        for (let age in obj) {
+            const ageValue = parseInt(age);
+            if (ageValue >= 20 && ageValue < 25) {
+                ranges['20-25'] += obj[age];
+            } else if (ageValue >= 25 && ageValue < 30) {
+                ranges['25-30'] += obj[age];
+            } else if (ageValue >= 30 && ageValue < 35) {
+                ranges['30-35'] += obj[age];
+            } else if (ageValue >= 35 && ageValue < 40) {
+                ranges['35-40'] += obj[age];
+            } else if (ageValue >= 40 && ageValue < 45) {
+                ranges['40-45'] += obj[age];
+            } else if (ageValue >= 45) {
+                ranges['45+'] += obj[age];
+            }
+        }
+        // 生成数据数组
+        const seriesData = Object.values(ranges);
+        ageBar.setOption({
+            title: {
+                text: '看车用户年龄分布'
+            },
+            xAxis: {
+                type: 'category',
+                data: ['20-25', '25-30', '30-35', '35-40', '40-45', '45+']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name:'人数',
+                    data: seriesData,
+                    type: 'bar'
+                }
+            ]
+        })
+    })
     /*--------------------时间趋势折线图-----------------------------*/
     var myLineChart = echarts.init(document.getElementById("time_line"));
     myLineChart.setOption({
