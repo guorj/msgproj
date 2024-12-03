@@ -41,7 +41,7 @@
 <br>
 <hr>
 <div id="total" class="center">
-    <table class="table table-bordered" bgcolor="#b0e0e6">
+    <table class="table table-bordered" bgcolor="#ADD8E6">
         <thead>
         <tr>
             <th>
@@ -56,14 +56,22 @@
             <th>
                 女性用户数
             </th>
+            <th>
+                传统车型用户数
+            </th>
+            <th>
+                新能源用户数
+            </th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td id="datetime" style="width: 500px"></td>
-            <td id="TotalNum"></td>
-            <td id="male"></td>
-            <td id="female"></td>
+            <td id="datetime" style="width: 300px"></td>
+            <td id="TotalNum" style="width: 300px"></td>
+            <td id="male" style="width: 300px"></td>
+            <td id="female" style="width: 300px"></td>
+            <td id="traditional" style="width: 300px"></td>
+            <td id="newEnergy" style="width: 300px"></td>
         </tr>
         </tbody>
     </table>
@@ -77,47 +85,70 @@
 <br>
 <hr>
 <div id="pie_chart" style="width: 1500px;height:600px;" class="center"></div>
-<br>
-<hr>
-<div id="import_pie" style="width: 1500px;height:600px;" class="center"></div>
-<br>
-<hr>
-<div id="covid19_wz" style="width: 1500px;height:600px;" class="center"></div>
 </body>
 
 <script type="text/javascript">
+    /**
+     * 获取时间方法
+     * @returns {string}
+     */
+    function getCurrentDate() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // 月份从0开始
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    function getCurrentTime() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+    }
 
     /*--------------------全国统计数据-----------------------------*/
-    $(document).ready(function() {
-        $.getJSON("http://localhost:8080/uvi/gender", function (data) {
-            // alert(JSON.stringify(data.valueMap));
-            obj = JSON.parse(JSON.stringify(data.valueMap))
-            // alert(JSON.stringify(obj))
-            $("#datetime").html(new Date().toString())
-            $("#TotalNum").html(obj['男']+obj['女'])
-            $("#male").html(obj['男'])
-            $("#female").html(obj['女'])
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            console.error("请求失败: " + textStatus, errorThrown);
-        });});
+    $.getJSON("http://localhost:8080/uvi/gender", function (data) {
+        // alert(JSON.stringify(data.valueMap));
+        obj = JSON.parse(JSON.stringify(data.valueMap))
+        // alert(JSON.stringify(obj))
+        $("#datetime").html(`${getCurrentDate()} ${getCurrentTime()}`)
+        $("#TotalNum").html(obj['男'] + obj['女'])
+        $("#male").html(obj['男'])
+        $("#female").html(obj['女'])
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.error("请求失败: " + textStatus, errorThrown);
+    });
+    $.getJSON("http://localhost:8080/uvi/newEnergy", function (data) {
+        // alert(JSON.stringify(data.valueMap));
+        obj = JSON.parse(JSON.stringify(data.valueMap))
+        // alert(JSON.stringify(obj))
+        $("#traditional").html(obj[0])
+        $("#newEnergy").html(obj[1])
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.error("请求失败: " + textStatus, errorThrown);
+    });
 
 
     /*--------------------全国地图-----------------------------*/
-    var dataList=[
+    var dataList = [
         {name: '北京', value: 100},
         {name: '上海', value: randomValue()}
     ]
+
     function randomValue() {
-        return Math.round(Math.random()*1000);
+        return Math.round(Math.random() * 1000);
     }
+
     var myMapChart = echarts.init(document.getElementById('map_all'));
     myMapChart.setOption({
         title: {
             text: '看车用户地图'
         },
         tooltip: {
-            formatter:function(params,ticket, callback){
-                return params.seriesName+'<br />'+params.name+'：'+params.value
+            formatter: function (params, ticket, callback) {
+                return params.seriesName + '<br />' + params.name + '：' + params.value
             }
         },
         visualMap: {
@@ -125,28 +156,28 @@
             max: 1500,
             left: 'left',
             top: 'bottom',
-            text: ['多','少'],
+            text: ['多', '少'],
             inRange: {
-                color: ['#ffe5bf', '#ffa372', '#ff7e86','#ee1216','#B22222']
+                color: ['#ffe5bf', '#ffa372', '#ff7e86', '#ee1216', '#B22222']
             },
-            show:true
+            show: true
         },
         geo: {
             map: 'china',
             roam: true,//不开启缩放和平移
-            zoom:1.23,//视角缩放比例
+            zoom: 1.23,//视角缩放比例
             label: {
                 normal: {
                     show: true,
-                    fontSize:'10',
+                    fontSize: '10',
                     color: 'rgba(0,0,0,0.7)'
                 }
             },
             itemStyle: {
-                normal:{
+                normal: {
                     borderColor: 'rgba(0, 0, 0, 0.2)'
                 },
-                emphasis:{
+                emphasis: {
                     areaColor: '#AEEEEE',//鼠标悬停区域颜色
                     shadowOffsetX: 0,
                     shadowOffsetY: 0,
@@ -156,28 +187,28 @@
                 }
             }
         },
-        series : [
+        series: [
             {
                 name: '看车用户',
                 type: 'map',
                 geoIndex: 0,
-                data:dataList
+                data: dataList
 
             }
         ]
     });
 
-    myMapChart.on('click', function (params) {
-        alert(params.name);
-    });
+    // myMapChart.on('click', function (params) {
+    //     alert('省份: ' + params.name +'\n人数 : '+ params.value);
+    // });
 
     setTimeout(function () {
         // 异步加载json格式数据
-        $.getJSON('http://localhost:8080/uvi/province', function(data) {
+        $.getJSON('http://localhost:8080/uvi/province', function (data) {
 
             // json转换为数组格式
             const dataArray = Object.entries(data.valueMap).map(([name, value]) => {
-                return { name, value };
+                return {name, value};
             });
             myMapChart.setOption({
                 series: [{
@@ -219,25 +250,80 @@
         }
         // 生成数据数组
         const seriesData = Object.values(ranges);
-        ageBar.setOption({
-            title: {
-                text: '看车用户年龄分布'
-            },
-            xAxis: {
-                type: 'category',
-                data: ['20-25', '25-30', '30-35', '35-40', '40-45', '45+']
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [
-                {
-                    name:'人数',
-                    data: seriesData,
-                    type: 'bar'
-                }
-            ]
-        })
+        ageBar.setOption(
+            {
+                title: {
+                    text: '看车用户年龄分布图'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['20-25', '25-30', '30-35', '35-40', '40-45', '45+'],
+                        axisTick: {
+                            alignWithLabel: true
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: '人数',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: seriesData,
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(180, 180, 180, 0.1)'
+                        },
+                        itemStyle: {
+                            color: '#4682B4'
+                        }
+                    }
+                ]
+            }
+        )
+        // {
+        //     title: {
+        //         text: '看车用户年龄分布'
+        //     },
+        //     xAxis: {
+        //         type: 'category',
+        //             data: ['20-25', '25-30', '30-35', '35-40', '40-45', '45+']
+        //     },
+        //     yAxis: {
+        //         type: 'value'
+        //     },
+        //     series: [
+        //         {
+        //             name:'人数',
+        //             data: seriesData,
+        //             type: 'bar',
+        //             showBackground: true,
+        //             backgroundStyle: {
+        //                 color: 'rgba(180, 180, 180, 0.1)'
+        //             },
+        //             itemStyle: {
+        //                 color: '#4682B4'
+        //             }
+        //         }
+        //     ],
+        // }
     })
     /*--------------------按品牌分布-----------------------------*/
     var pieChart = echarts.init(document.getElementById('pie_chart'));
@@ -246,39 +332,39 @@
         // console.log(JSON.stringify(data.valueMap))
         // 定义区间
         const legendData = Object.keys(obj);
-        const seriesData = Object.entries(obj).map(([name, value]) => ({ name, value }));
+        const seriesData = Object.entries(obj).map(([name, value]) => ({name, value}));
         // 初始化属性
-            pieChart.setOption(
-                {
-                    legend: {
-                        orient: 'vertical',
-                        x: 'left',
-                        data: legendData
-                    },
-                    series: [
-                        {
-                            type: 'pie',
-                            radius: ['50%', '70%'],
-                            avoidLabelOverlap: false,
-                            label: {
-                                show: false,
-                                position: 'center'
-                            },
-                            labelLine: {
-                                show: false
-                            },
-                            emphasis: {
-                                label: {
-                                    show: true,
-                                    fontSize: '30',
-                                    fontWeight: 'bold'
-                                }
-                            },
-                            data: seriesData
+        pieChart.setOption(
+            {
+                title: {
+                    text: '品牌热度分布',
+                    subtext: '',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [
+                    {
+                        name: 'Access From',
+                        type: 'pie',
+                        radius: '50%',
+                        data: seriesData,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
                         }
-                    ]
-                }
-            )
+                    }
+                ]
+            }
+        )
     })
 </script>
 </html>
