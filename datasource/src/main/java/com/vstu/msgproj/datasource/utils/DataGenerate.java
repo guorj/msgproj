@@ -23,6 +23,8 @@ public class DataGenerate {
             new ProvinceCityLevel("浙江", "温州市", "二线城市"),
             new ProvinceCityLevel("山东", "济南市", "二线城市"),
             new ProvinceCityLevel("山东", "青岛市", "二线城市"),
+            new ProvinceCityLevel("山西", "晋城市", "三线城市"),
+            new ProvinceCityLevel("山西", "太原市", "二线城市"),
             new ProvinceCityLevel("山东", "潍坊市", "三线城市"),
             new ProvinceCityLevel("河北", "石家庄市", "二线城市"),
             new ProvinceCityLevel("河北", "唐山市", "三线城市"),
@@ -92,6 +94,8 @@ public class DataGenerate {
             new ProvinceCityLevel("云南", "保山市", "三线城市"),
             new ProvinceCityLevel("云南", "德宏州", "三线城市"),
             new ProvinceCityLevel("云南", "怒江州", "三线城市"),
+            new ProvinceCityLevel("台湾", "台北", "二线城市"),
+            new ProvinceCityLevel("台湾", "台中", "三线城市"),
             new ProvinceCityLevel("云南", "迪庆州", "三线城市")
     );
 
