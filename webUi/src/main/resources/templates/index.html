@@ -99,7 +99,6 @@
             $("#female").html(obj['女'])
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.error("请求失败: " + textStatus, errorThrown);
-            alert(3);
         });});
 
 
@@ -190,7 +189,7 @@
     /*--------------------年龄分布-----------------------------*/
     var ageBar = echarts.init(document.getElementById('age_bar'));
     $.getJSON("http://localhost:8080/uvi/age", function (data) {
-        alert(JSON.stringify(data.valueMap));
+        // alert(JSON.stringify(data.valueMap));
         obj = JSON.parse(JSON.stringify(data.valueMap))
         // 定义区间
         const ranges = {
@@ -281,116 +280,5 @@
                 }
             )
     })
-
-    /*--------------------时间趋势折线图-----------------------------*/
-    // var myLineChart = echarts.init(document.getElementById("time_line"));
-    // myLineChart.setOption({
-    //     title: {
-    //         text: '疫情趋势'
-    //     },
-    //     tooltip: {
-    //         trigger: 'axis'
-    //     },
-    //     legend: {
-    //         data: ['新增确诊', '累计确诊', '疑似病例', '累计治愈', '累计死亡']
-    //     },
-    //     dataset: {
-    //         // 这里指定了维度名的顺序，从而可以利用默认的维度到坐标轴的映射。
-    //         dimensions: ['dateId', '新增确诊', '累计确诊', '疑似病例', '累计治愈', '累计死亡'],
-    //         source: []
-    //     },
-    //     grid: {
-    //         left: '3%',
-    //         right: '4%',
-    //         bottom: '3%',
-    //         containLabel: true
-    //     },
-    //     toolbox: {
-    //         feature: {
-    //             saveAsImage: {}
-    //         }
-    //     },
-    //     xAxis: {
-    //         type: 'category',
-    //         boundaryGap: false,
-    //         data: []
-    //     },
-    //     yAxis: {
-    //         type: 'value'
-    //     },
-    //     series: [
-    //         {type: 'line'},
-    //         {type: 'line'},
-    //         {type: 'line'},
-    //         {type: 'line'},
-    //         {type: 'line'}
-    //     ]
-    // });
-
-
-    // var xdata2 = [];//x轴
-    // $.getJSON('http://localhost:8080/covid/getCovidTimeData', function (data) {
-    //     var arr = data.data
-    //     for (var i = 0; i < arr.length; i++) {
-    //         xdata2.push(arr[i].dateId)
-    //     }
-    //     myLineChart.setOption({
-    //         dataset: {
-    //             source: data.data
-    //         },
-    //         xAxis: {
-    //             data: xdata2
-    //         }
-    //     })
-    // })
-
-
-    /*--------------------救援物资-----------------------------*/
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('covid19_wz'));
-    myChart.setOption({
-        title: {
-            text: '救援物资'
-        },
-        legend: {},
-        tooltip: {},
-        dataset: {
-            // 这里指定了维度名的顺序，从而可以利用默认的维度到坐标轴的映射。
-            dimensions: ['name', '采购', '下拨', '捐赠', '消耗', '需求', '库存'],
-            source: []
-        },
-        xAxis: {
-            type: 'category',
-            data: []
-        },
-        yAxis: {},
-        series: [
-            {type: 'bar'},
-            {type: 'bar'},
-            {type: 'bar'},
-            {type: 'bar'},
-            {type: 'bar'},
-            {type: 'bar'}
-        ]
-    });
-
-    // var xdata = [];//x轴
-    // setInterval(function () {
-    //     $.getJSON("http://localhost:8080/covid/getCovidWz", function (data) {
-    //         var arr = data.data
-    //         xdata = []
-    //         for (var i = 0; i < arr.length; i++) {
-    //             xdata.push(arr[i].name)
-    //         }
-    //         myChart.setOption({
-    //             dataset: {
-    //                 source: data.data
-    //             },
-    //             xAxis: {
-    //                 data: xdata
-    //             }
-    //         })
-    //     })
-    // }, 2000)
 </script>
 </html>
